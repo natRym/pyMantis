@@ -16,3 +16,12 @@ def test_add_project(app, db):
     new_projects_list = db.get_project_list()
     old_projects_list.append(project)
     assert sorted(old_projects_list, key=Project.id_or_max) == sorted(new_projects_list, key=Project.id_or_max)
+
+
+def test_add_project_via_soap(app):
+    project = Project(name=(random_project_name("project_", 10)))
+    old_projects_list = app.soap.get_projects_list()
+    app.project.create_project(project)
+    new_projects_list = app.soap.get_projects_list()
+    old_projects_list.append(project)
+    assert sorted(old_projects_list, key=Project.id_or_max) == sorted(new_projects_list, key=Project.id_or_max)

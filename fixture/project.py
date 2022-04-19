@@ -33,17 +33,6 @@ class ProjectHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
-    # def get_projects_list(self):
-    #     if self.project_cache is None:
-    #         wd = self.app.wd
-    #         self.open_project_page()
-    #         self.project_cache = []
-    #         for element in wd.find_elements_by_xpath("//a[contains(@href, 'project_id')]"):
-    #             id = element.find_element_by_xpath("//a[contains(@href, 'project_id')").get_attribute("text")
-    #             self.contact_cache.append(Project(id=id))
-    #     return list(self.contact_cache)
-
-
     def open_project_page_by_id(self, id):
         wd = self.app.wd
         self.open_project_page()
