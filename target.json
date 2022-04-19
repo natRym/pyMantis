@@ -1,6 +1,8 @@
 {
   "web": {
-    "baseURL": "http://localhost/mantisbt-1.2.20/"
+    "baseURL": "http://localhost/mantisbt-1.2.20/",
+    "username": "administrator",
+    "password": "root"
   },
     "web_admin": {
     "username": "administrator",
@@ -15,6 +17,17 @@
     "host": "localhost",
     "port": 4555,
     "username": "root",
+    "password": "root"
+  },
+  "db": {
+    "host": "localhost",
+    "name": "bugtracker",
+    "user": "root",
+    "password": ""
+  },
+  "soap": {
+    "host": "http://localhost:/mantisbt-1.2.20/api/soap/mantisconnect.php?wsdl",
+    "username": "administrator",
     "password": "root"
   }
 }

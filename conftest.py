@@ -5,6 +5,7 @@ import importlib
 import ftputil
 
 from fixture.application import Application
+from fixture.db import DbFixture
 
 fixture = None
 target = None
@@ -19,18 +20,19 @@ def load_config(file):
     return target
 
 
+@pytest.fixture(scope='session')
+def config(request):
+    return load_config(request.config.getoption("--target"))
+
+
 @pytest.fixture
 def app(request, config):
     global fixture
     browser = request.config.getoption("--browser")
     if fixture is None or not fixture.is_valid():
         fixture = Application(browser=browser, config=config)
+    fixture.session.ensure_login(username=config["web_admin"]['username'], password=config["web_admin"]['password'])
     return fixture
-
-
-@pytest.fixture(scope='session')
-def config(request):
-    return load_config(request.config.getoption("--target"))
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -47,8 +49,22 @@ def configure_server(request, config):
     install_server_configuration(config['ftp']['host'], config['ftp']['username'], config['ftp']['password'])
 
     def fin():
-       restore_server_configuration(config['ftp']['host'], config['ftp']['username'], config['ftp']['password'])
+        restore_server_configuration(config['ftp']['host'], config['ftp']['username'], config['ftp']['password'])
+
     request.addfinalizer(fin)
+
+
+@pytest.fixture(scope='session')
+def db(request):
+    db_config = load_config(request.config.getoption("--target"))['db']
+    dbfixture = DbFixture(host=db_config["host"], name=db_config["name"], user=db_config["user"],
+                          password=db_config["password"])
+
+    def fin():
+        dbfixture.destroy()
+
+    request.addfinalizer(fin)
+    return dbfixture
 
 
 def install_server_configuration(host, username, password):
