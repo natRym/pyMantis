@@ -24,10 +24,5 @@
     "name": "bugtracker",
     "user": "root",
     "password": ""
-  },
-  "soap": {
-    "host": "http://localhost:/mantisbt-1.2.20/api/soap/mantisconnect.php?wsdl",
-    "username": "administrator",
-    "password": "root"
   }
 }
